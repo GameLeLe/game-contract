@@ -1,154 +1,180 @@
-pragma solidity ^0.4.2;
-contract owned {
-    address public owner;
+pragma solidity ^0.4.8;
 
-    function owned() {
-        owner = msg.sender;
+// The implementation for the Game ICO smart contract was inspired by
+// the Ethereum token creation tutorial, the FirstBlood token, and the BAT token.
+
+///////////////
+// SAFE MATH //
+///////////////
+
+contract SafeMath {
+
+    // assert no longer needed once solidity is on 0.4.10
+    function assert(bool assertion) internal {
+        if (!assertion) {
+            throw;
+        }
     }
 
-    modifier onlyOwner {
-        if (msg.sender != owner) throw;
-        _;
+    function safeAdd(uint256 x, uint256 y) internal returns(uint256) {
+      uint256 z = x + y;
+      assert((z >= x) && (z >= y));
+      return z;
     }
 
-    function transferOwnership(address newOwner) onlyOwner {
-        owner = newOwner;
+    function safeSubtract(uint256 x, uint256 y) internal returns(uint256) {
+      assert(x >= y);
+      uint256 z = x - y;
+      return z;
     }
+
+    function safeMult(uint256 x, uint256 y) internal returns(uint256) {
+      uint256 z = x * y;
+      assert((x == 0)||(z/x == y));
+      return z;
+    }
+
 }
 
-contract tokenRecipient { function receiveApproval(address _from, uint256 _value, address _token, bytes _extraData); }
 
-contract token {
-    /* Public variables of the token */
-    string public standard = 'Token 0.1';
-    string public name;
-    string public symbol;
-    uint8 public decimals;
+////////////////////
+// STANDARD TOKEN //
+////////////////////
+
+contract Token {
     uint256 public totalSupply;
+    function balanceOf(address _owner) constant returns (uint256 balance);
+    function transfer(address _to, uint256 _value) returns (bool success);
+    function transferFrom(address _from, address _to, uint256 _value) returns (bool success);
+    function approve(address _spender, uint256 _value) returns (bool success);
+    function allowance(address _owner, address _spender) constant returns (uint256 remaining);
+    event Transfer(address indexed _from, address indexed _to, uint256 _value);
+    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
+}
 
-    /* This creates an array with all balances */
-    mapping (address => uint256) public balanceOf;
-    mapping (address => mapping (address => uint256)) public allowance;
+/*  ERC 20 token */
+contract StandardToken is Token {
+    
+    mapping (address => uint256) balances;
+    mapping (address => mapping (address => uint256)) allowed;
 
-    /* This generates a public event on the blockchain that will notify clients */
-    event Transfer(address indexed from, address indexed to, uint256 value);
-
-    /* Initializes contract with initial supply tokens to the creator of the contract */
-    function token(
-        uint256 initialSupply,
-        string tokenName,
-        uint8 decimalUnits,
-        string tokenSymbol
-        ) {
-        balanceOf[msg.sender] = initialSupply;              // Give the creator all initial tokens
-        totalSupply = initialSupply;                        // Update total supply
-        name = tokenName;                                   // Set the name for display purposes
-        symbol = tokenSymbol;                               // Set the symbol for display purposes
-        decimals = decimalUnits;                            // Amount of decimals for display purposes
+    function transfer(address _to, uint256 _value) returns (bool success) {
+      if (balances[msg.sender] >= _value && _value > 0) {
+        balances[msg.sender] -= _value;
+        balances[_to] += _value;
+        Transfer(msg.sender, _to, _value);
+        return true;
+      } else {
+        return false;
+      }
     }
 
-    /* Send coins */
-    function transfer(address _to, uint256 _value) {
-        if (balanceOf[msg.sender] < _value) throw;           // Check if the sender has enough
-        if (balanceOf[_to] + _value < balanceOf[_to]) throw; // Check for overflows
-        balanceOf[msg.sender] -= _value;                     // Subtract from the sender
-        balanceOf[_to] += _value;                            // Add the same to the recipient
-        Transfer(msg.sender, _to, _value);                   // Notify anyone listening that this transfer took place
-    }
-
-    /* A contract attempts to get the coins */
     function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
-        if (balanceOf[_from] < _value) throw;                 // Check if the sender has enough
-        if (balanceOf[_to] + _value < balanceOf[_to]) throw;  // Check for overflows
-        if (_value > allowance[_from][msg.sender]) throw;   // Check allowance
-        balanceOf[_from] -= _value;                          // Subtract from the sender
-        balanceOf[_to] += _value;                            // Add the same to the recipient
-        allowance[_from][msg.sender] -= _value;
+      if (balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0) {
+        balances[_to] += _value;
+        balances[_from] -= _value;
+        allowed[_from][msg.sender] -= _value;
         Transfer(_from, _to, _value);
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function balanceOf(address _owner) constant returns (uint256 balance) {
+        return balances[_owner];
+    }
+
+    function approve(address _spender, uint256 _value) returns (bool success) {
+        allowed[msg.sender][_spender] = _value;
+        Approval(msg.sender, _spender, _value);
         return true;
     }
 
-    /* This unnamed function is called whenever someone tries to send ether to it */
-    function () {
-        throw;     // Prevents accidental sending of ether
+    function allowance(address _owner, address _spender) constant returns (uint256 remaining) {
+      return allowed[_owner][_spender];
     }
 }
 
-contract GameToken is owned, token {
+/////////////////////
+//GAME.COM ICO TOKEN//
+/////////////////////
 
-    uint256 public sellPrice;
-    uint256 public buyPrice;
+contract GameICO is StandardToken, SafeMath {
+    // Descriptive properties
+    string public constant name = "Game.com ICO Token";
+    string public constant symbol = "GAMECOMICO";
+    uint256 public constant decimals = 18;
+    string public version = "1.0";
 
-    mapping (address => bool) public frozenAccount;
+    // Account for ether proceed.
+    address public etherProceedsAccount;
 
-    /* This generates a public event on the blockchain that will notify clients */
-    event FrozenFunds(address target, bool frozen);
+    // These params specify the start, end, min, and max of the sale.
+    bool public isFinalized;
+    uint256 public fundingStartBlock;
+    uint256 public fundingEndBlock;
 
-    /* Initializes contract with initial supply tokens to the creator of the contract */
-    function GameToken(
-        uint256 initialSupply,
-        string tokenName,
-        uint8 decimalUnits,
-        string tokenSymbol
-    ) token (initialSupply, tokenName, decimalUnits, tokenSymbol) {}
+    uint256 public constant tokenCreationCap =  375200000 * 10**decimals;
+    uint256 public constant tokenCreationMin =  938000 * 10**decimals;
 
-    /* Send coins */
-    function transfer(address _to, uint256 _value) {
-        if (balanceOf[msg.sender] < _value) throw;           // Check if the sender has enough
-        if (balanceOf[_to] + _value < balanceOf[_to]) throw; // Check for overflows
-        if (frozenAccount[msg.sender]) throw;                // Check if frozen
-        balanceOf[msg.sender] -= _value;                     // Subtract from the sender
-        balanceOf[_to] += _value;                            // Add the same to the recipient
-        Transfer(msg.sender, _to, _value);                   // Notify anyone listening that this transfer took place
+    // Setting the exchange rate for the first part of the ICO.
+    uint256 public constant gameEthExchangeRate = 3752;
+
+    // Events for logging refunds and token creation.
+    event LogRefund(address indexed _to, uint256 _value);
+    event CreateGameIco(address indexed _to, uint256 _value);
+
+    // constructor
+    function GameICO(address _etherProceedsAccount, uint256 _fundingStartBlock, uint256 _fundingEndBlock)
+    {
+      isFinalized                    = false;
+      etherProceedsAccount           = _etherProceedsAccount;
+      fundingStartBlock              = _fundingStartBlock;
+      fundingEndBlock                = _fundingEndBlock;
+      totalSupply                    = 0;
+    }
+    function () payable {
+        create();
+    }
+    function create() payable{
+      require(!isFinalized);
+      require(block.number >= fundingStartBlock);
+      require(block.number <= fundingEndBlock);
+      require(msg.value > 0);
+
+      uint256 tokens = safeMult(msg.value, gameEthExchangeRate);
+      uint256 checkedSupply = safeAdd(totalSupply, tokens);
+      require(tokenCreationCap >= checkedSupply);
+
+      totalSupply = checkedSupply;
+      balances[msg.sender] += tokens;
+      CreateGameIco(msg.sender, tokens);
     }
 
-
-    /* A contract attempts to get the coins */
-    function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
-        if (frozenAccount[_from]) throw;                        // Check if frozen            
-        if (balanceOf[_from] < _value) throw;                 // Check if the sender has enough
-        if (balanceOf[_to] + _value < balanceOf[_to]) throw;  // Check for overflows
-        if (_value > allowance[_from][msg.sender]) throw;   // Check allowance
-        balanceOf[_from] -= _value;                          // Subtract from the sender
-        balanceOf[_to] += _value;                            // Add the same to the recipient
-        allowance[_from][msg.sender] -= _value;
-        Transfer(_from, _to, _value);
-        return true;
+    function finalize() external {
+        require(!isFinalized);
+        require(msg.sender == etherProceedsAccount);
+        require(totalSupply >= tokenCreationMin);
+        require(block.number > fundingEndBlock || totalSupply >= tokenCreationCap);
+        isFinalized = true;
+        if (!etherProceedsAccount.send(this.balance)) throw;
     }
 
-    function mintToken(address target, uint256 mintedAmount) onlyOwner {
-        balanceOf[target] += mintedAmount;
-        totalSupply += mintedAmount;
-        Transfer(0, this, mintedAmount);
-        Transfer(this, target, mintedAmount);
+    function refund() external {
+        require(!isFinalized);
+        require(block.number > fundingEndBlock);
+        require(totalSupply < tokenCreationMin);
+        
+        uint256 credoVal = balances[msg.sender];
+        require(credoVal != 0);
+        balances[msg.sender] = 0;
+        totalSupply = safeSubtract(totalSupply, credoVal);
+        uint256 ethVal = credoVal / gameEthExchangeRate;
+        LogRefund(msg.sender, ethVal);
+        if (!msg.sender.send(ethVal)) throw;
     }
 
-    function freezeAccount(address target, bool freeze) onlyOwner {
-        frozenAccount[target] = freeze;
-        FrozenFunds(target, freeze);
-    }
-
-    function setPrices(uint256 newSellPrice, uint256 newBuyPrice) onlyOwner {
-        sellPrice = newSellPrice;
-        buyPrice = newBuyPrice;
-    }
-
-    function buy() payable {
-        uint amount = msg.value / buyPrice;                // calculates the amount
-        if (balanceOf[this] < amount) throw;               // checks if it has enough to sell
-        balanceOf[msg.sender] += amount;                   // adds the amount to buyer's balance
-        balanceOf[this] -= amount;                         // subtracts amount from seller's balance
-        Transfer(this, msg.sender, amount);                // execute an event reflecting the change
-    }
-
-    function sell(uint256 amount) {
-        if (balanceOf[msg.sender] < amount ) throw;        // checks if the sender has enough to sell
-        balanceOf[this] += amount;                         // adds the amount to owner's balance
-        balanceOf[msg.sender] -= amount;                   // subtracts the amount from seller's balance
-        if (!msg.sender.send(amount * sellPrice)) {        // sends ether to the seller. It's important
-            throw;                                         // to do this last to avoid recursion attacks
-        } else {
-            Transfer(msg.sender, this, amount);            // executes an event reflecting on the change
-        }               
-    }
 }
+
+
