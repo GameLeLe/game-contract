@@ -17,21 +17,21 @@ contract SafeMath {
     }
 
     function safeAdd(uint256 x, uint256 y) internal returns(uint256) {
-      uint256 z = x + y;
-      assert((z >= x) && (z >= y));
-      return z;
+        uint256 z = x + y;
+        assert((z >= x) && (z >= y));
+        return z;
     }
 
     function safeSubtract(uint256 x, uint256 y) internal returns(uint256) {
-      assert(x >= y);
-      uint256 z = x - y;
-      return z;
+        assert(x >= y);
+        uint256 z = x - y;
+        return z;
     }
 
     function safeMult(uint256 x, uint256 y) internal returns(uint256) {
-      uint256 z = x * y;
-      assert((x == 0)||(z/x == y));
-      return z;
+        uint256 z = x * y;
+        assert((x == 0)||(z/x == y));
+        return z;
     }
 
 }
@@ -54,31 +54,31 @@ contract Token {
 
 /*  ERC 20 token */
 contract StandardToken is Token {
-    
+
     mapping (address => uint256) balances;
     mapping (address => mapping (address => uint256)) allowed;
 
     function transfer(address _to, uint256 _value) returns (bool success) {
-      if (balances[msg.sender] >= _value && _value > 0) {
-        balances[msg.sender] -= _value;
-        balances[_to] += _value;
-        Transfer(msg.sender, _to, _value);
-        return true;
-      } else {
-        return false;
-      }
+        if (balances[msg.sender] >= _value && _value > 0) {
+            balances[msg.sender] -= _value;
+            balances[_to] += _value;
+            Transfer(msg.sender, _to, _value);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
-      if (balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0) {
-        balances[_to] += _value;
-        balances[_from] -= _value;
-        allowed[_from][msg.sender] -= _value;
-        Transfer(_from, _to, _value);
-        return true;
-      } else {
-        return false;
-      }
+        if (balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0) {
+            balances[_to] += _value;
+            balances[_from] -= _value;
+            allowed[_from][msg.sender] -= _value;
+            Transfer(_from, _to, _value);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function balanceOf(address _owner) constant returns (uint256 balance) {
@@ -92,7 +92,7 @@ contract StandardToken is Token {
     }
 
     function allowance(address _owner, address _spender) constant returns (uint256 remaining) {
-      return allowed[_owner][_spender];
+        return allowed[_owner][_spender];
     }
 }
 
@@ -112,67 +112,134 @@ contract GameICO is StandardToken, SafeMath {
 
     // These params specify the start, end, min, and max of the sale.
     bool public isFinalized;
-    uint256 public fundingStartBlock;
-    uint256 public fundingEndBlock;
 
-    uint256 public constant tokenCreationCap =  375200000 * 10**decimals;
-    uint256 public constant tokenCreationMin =  938000 * 10**decimals;
+    uint256 public window0TotalSupply;
+    uint256 public window1TotalSupply;
+    uint256 public window2TotalSupply;
+    uint256 public window3TotalSupply;
 
-    // Setting the exchange rate for the first part of the ICO.
-    uint256 public constant gameEthExchangeRate = 3752;
+    uint256 public window0StartTime;
+    uint256 public window0EndTime;
+    uint256 public window1StartTime;
+    uint256 public window1EndTime;
+    uint256 public window2StartTime;
+    uint256 public window2EndTime;
+    uint256 public window3StartTime;
+    uint256 public window3EndTime;
+
+    // setting the capacity of every part of ico
+    uint256 public constant preservedTokens = 300000000 * 10**decimals;
+    uint256 public constant window0TokenCreationCap = 200000000 * 10**decimals;
+    uint256 public constant window1TokenCreationCap = 100000000 * 10**decimals;
+    uint256 public constant window2TokenCreationCap = 100000000 * 10**decimals;
+    uint256 public constant window3TokenCreationCap = 300000000 * 10**decimals;
+
+    // Setting the exchange rate for the ICO.
+    uint256 public constant window0TokenExchangeRate = 5000;
+    uint256 public constant window1TokenExchangeRate = 4000;
+    uint256 public constant window2TokenExchangeRate = 3000;
+    uint256 public constant window3TokenExchangeRate = 0;
 
     // Events for logging refunds and token creation.
-    event LogRefund(address indexed _to, uint256 _value);
+    //event LogRefund(address indexed _to, uint256 _value);
     event CreateGameIco(address indexed _to, uint256 _value);
 
     // constructor
-    function GameICO(address _etherProceedsAccount, uint256 _fundingStartBlock, uint256 _fundingEndBlock)
+    function GameICO(address _etherProceedsAccount,
+        uint256 _window0StartTime, uint256 _window0EndTime,
+        uint256 _window1StartTime, uint256 _window1EndTime,
+        uint256 _window2StartTime, uint256 _window2EndTime,
+        uint256 _window3StartTime, uint256 _window3EndTime)
     {
-      isFinalized                    = false;
-      etherProceedsAccount           = _etherProceedsAccount;
-      fundingStartBlock              = _fundingStartBlock;
-      fundingEndBlock                = _fundingEndBlock;
-      totalSupply                    = 0;
+        isFinalized             = false;
+        etherProceedsAccount    = _etherProceedsAccount;
+        totalSupply             = 0;
+        window0TotalSupply      = 0;
+        window1TotalSupply      = 0;
+        window2TotalSupply      = 0;
+        window3TotalSupply      = 0;
     }
+    function setTimeAttributes(
+        uint256 _window0StartTime, uint256 _window0EndTime,
+        uint256 _window1StartTime, uint256 _window1EndTime,
+        uint256 _window2StartTime, uint256 _window2EndTime,
+        uint256 _window3StartTime, uint256 _window3EndTime)
+    {
+        require(msg.sender == etherProceedsAccount);
+        window0StartTime = _window0StartTime;
+        window0EndTime = _window0EndTime;
+        window1StartTime = _window1StartTime;
+        window1EndTime = _window1EndTime;
+        window2StartTime = _window2StartTime;
+        window2EndTime = _window2EndTime;
+        window3StartTime = _window3StartTime;
+        window3EndTime = _window3EndTime;
+    }
+    function setProceedsAccount(address _newEtherProceedsAccount){
+        require(msg.sender == etherProceedsAccount);
+        etherProceedsAccount = _newEtherProceedsAccount;
+    }
+
     function () payable {
         create();
     }
     function create() payable{
-      require(!isFinalized);
-      require(block.number >= fundingStartBlock);
-      require(block.number <= fundingEndBlock);
-      require(msg.value > 0);
+        require(!isFinalized);
+        require(msg.value > 0);
+        uint256 tokens = 0;
+        uint256 checkedSupply = 0;
 
-      uint256 tokens = safeMult(msg.value, gameEthExchangeRate);
-      uint256 checkedSupply = safeAdd(totalSupply, tokens);
-      require(tokenCreationCap >= checkedSupply);
+        if(now >= window0StartTime && now <= window0EndTime){
+            tokens = safeMult(msg.value, window0TokenExchangeRate);
+            checkedSupply = safeAdd(window0TotalSupply, tokens);
+            require(window0TokenCreationCap >= checkedSupply);
+            balances[msg.sender] += tokens;
+            window0TotalSupply = checkedSupply;
+            CreateGameIco(msg.sender, tokens);
+        }else if(now >= window1StartTime && now <= window1EndTime){
+            tokens = safeMult(msg.value, window1TokenExchangeRate);
+            checkedSupply = safeAdd(window1TotalSupply, tokens);
+            require(window1TokenCreationCap >= checkedSupply);
+            balances[msg.sender] += tokens;
+            window1TotalSupply = checkedSupply;
+            CreateGameIco(msg.sender, tokens);
+        }else if(now >= window2StartTime && now <= window2EndTime){
+            //special case
+            //with the days changing, it's a linear function about the window2TokenExchangeRate
+            uint whichDay = today(window2StartTime);
+            uint exchangeRate = window2TokenExchangeRate - (whichDay-1)*50;
+            tokens = safeMult(msg.value, exchangeRate);
+            checkedSupply = safeAdd(window2TotalSupply, tokens);
+            require(window2TokenCreationCap >= checkedSupply);
+            balances[msg.sender] += tokens;
+            window2TotalSupply = checkedSupply;
+            CreateGameIco(msg.sender, tokens);
+        }else if(now >= window3StartTime && now <= window3EndTime){
+            //TODO
 
-      totalSupply = checkedSupply;
-      balances[msg.sender] += tokens;
-      CreateGameIco(msg.sender, tokens);
+        }else{
+            throw;
+        }
+
     }
 
-    function finalize() external {
+    function time() constant returns (uint) {
+        return block.timestamp;
+    }
+
+    function today(uint startTime) constant returns (uint) {
+        return dayFor(time(), startTime);
+    }
+
+    function dayFor(uint timestamp, uint startTime) constant returns (uint) {
+        return timestamp < startTime ? 0 : safeSubtract(timestamp, startTime) / 24 hours + 1;
+    }
+
+    function finalize() {
         require(!isFinalized);
         require(msg.sender == etherProceedsAccount);
-        require(totalSupply >= tokenCreationMin);
-        require(block.number > fundingEndBlock || totalSupply >= tokenCreationCap);
         isFinalized = true;
         if (!etherProceedsAccount.send(this.balance)) throw;
-    }
-
-    function refund() external {
-        require(!isFinalized);
-        require(block.number > fundingEndBlock);
-        require(totalSupply < tokenCreationMin);
-        
-        uint256 credoVal = balances[msg.sender];
-        require(credoVal != 0);
-        balances[msg.sender] = 0;
-        totalSupply = safeSubtract(totalSupply, credoVal);
-        uint256 ethVal = credoVal / gameEthExchangeRate;
-        LogRefund(msg.sender, ethVal);
-        if (!msg.sender.send(ethVal)) throw;
     }
 
 }
