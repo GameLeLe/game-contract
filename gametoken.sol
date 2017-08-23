@@ -153,11 +153,14 @@ contract GameICO is StandardToken, SafeMath {
     {
         isFinalized             = false;
         etherProceedsAccount    = _etherProceedsAccount;
-        totalSupply             = 0;
-        window0TotalSupply      = 0;
-        window1TotalSupply      = 0;
-        window2TotalSupply      = 0;
-        window3TotalSupply      = 0;
+        window0StartTime = _window0StartTime;
+        window0EndTime = _window0EndTime;
+        window1StartTime = _window1StartTime;
+        window1EndTime = _window1EndTime;
+        window2StartTime = _window2StartTime;
+        window2EndTime = _window2EndTime;
+        window3StartTime = _window3StartTime;
+        window3EndTime = _window3EndTime;
     }
     function setTimeAttributes(
         uint256 _window0StartTime, uint256 _window0EndTime,
