@@ -189,21 +189,21 @@ contract GameICO is StandardToken, SafeMath {
         uint256 tokens = 0;
         uint256 checkedSupply = 0;
 
-        if(now >= window0StartTime && now <= window0EndTime){
+        if(time() >= window0StartTime && time() <= window0EndTime){
             tokens = safeMult(msg.value, window0TokenExchangeRate);
             checkedSupply = safeAdd(window0TotalSupply, tokens);
             require(window0TokenCreationCap >= checkedSupply);
             balances[msg.sender] += tokens;
             window0TotalSupply = checkedSupply;
             CreateGameIco(msg.sender, tokens);
-        }else if(now >= window1StartTime && now <= window1EndTime){
+        }else if(time() >= window1StartTime && time() <= window1EndTime){
             tokens = safeMult(msg.value, window1TokenExchangeRate);
             checkedSupply = safeAdd(window1TotalSupply, tokens);
             require(window1TokenCreationCap >= checkedSupply);
             balances[msg.sender] += tokens;
             window1TotalSupply = checkedSupply;
             CreateGameIco(msg.sender, tokens);
-        }else if(now >= window2StartTime && now <= window2EndTime){
+        }else if(time() >= window2StartTime && time() <= window2EndTime){
             //special case
             //with the days changing, it's a linear function about the window2TokenExchangeRate
             uint whichDay = today(window2StartTime);
@@ -214,7 +214,7 @@ contract GameICO is StandardToken, SafeMath {
             balances[msg.sender] += tokens;
             window2TotalSupply = checkedSupply;
             CreateGameIco(msg.sender, tokens);
-        }else if(now >= window3StartTime && now <= window3EndTime){
+        }else if(time() >= window3StartTime && time() <= window3EndTime){
             //TODO
 
         }else{
