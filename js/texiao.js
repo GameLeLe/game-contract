@@ -169,7 +169,7 @@ $(function () {
 
             // 下
             $("#section6 .text div").fadeOut(300);
-            $("#section6 .container").animate({height: "258px"}, 300);
+            $("#section6 .container").animate({height: "277px"}, 300);
             $("#section6 .t3").show().siblings().hide();
             // 过了300ms 点击文字的div显示
             setTimeout(function () {
