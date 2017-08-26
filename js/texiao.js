@@ -1,4 +1,13 @@
 $(function () {
+    // 字体设置
+    (function ($) {
+        var isMac = /^Mac/.test(navigator.platform);
+        if(!isMac) {
+            $("body")[0].setAttribute("style","font-family: 'Microsoft YaHei'");
+        }
+    })($);
+
+
     // 首页黄点特效
     (function ($) {
         var $nav = $("#section0 .nav1");

@@ -5,7 +5,6 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: max-content;
 }
 
 .section {
@@ -31,7 +30,7 @@
       line-height: 100px;
       text-align: center;
       display: inline-block;
-      background: url(../img/index_img/icon-nav.png) no-repeat;
+      background: url(http://ic.game.com/img/index_img/icon-nav.png) no-repeat;
       background-position-x: 14px;
       background-position-y: 48px;
       transition: all 1s;
@@ -164,7 +163,9 @@
 
 //第二屏
 #section1 {
-  background-image: url(../img/index_img/img2.png);
+  background-image: url(http://ic.game.com/img/index_img/img2.png);
+  -webkit-background-size: cover;
+  background-size: cover;
   .w {
     position: relative;
     height: 100%;
@@ -251,7 +252,7 @@
 
 //第三屏
 #section2 {
-  background-image: url(../img/index_img/img3.png);
+  background-image: url(http://ic.game.com/img/index_img/img3.png);
   background-size: cover;
   .w {
     height: 100%;
@@ -328,6 +329,7 @@
       display: inline-block;
       font-weight: 100;
       .center();
+      width:800px;
     }
     .info2 {
       font-size: 20px;
@@ -335,6 +337,7 @@
       font-weight: 100;
       display: inline-block;
       .center();
+      width: 609px;
     }
     .coin {
       .center();
@@ -402,6 +405,7 @@
       text-align: center;
       color: #ccc;
       font-weight: 100;
+      width: 537px;
     }
   }
 }
@@ -421,7 +425,7 @@
       width: 910px;
       height: 482px;
       top: 136px;
-      background-image: url(../img/table/tb.png);
+      background-image: url(http://ic.game.com/img/table/tb.png);
       background-size: cover;
       .tc {
         position: absolute;
@@ -482,6 +486,7 @@
       color: #ccc;
       font-weight: 100;
       text-align: center;
+      width: 500px;
     }
   }
 }
@@ -489,7 +494,7 @@
 //第六屏
 #section5 {
   position: relative;
-  background: url("../img/index_img/img4.png");
+  background: url("http://ic.game.com/img/index_img/img4.png");
   background-size: cover;
   .w {
     position: relative;
@@ -583,36 +588,42 @@
       left: 80px;
       .info2 {
         color: #82D5BE;
+        width: 72px;
       }
     }
     .st2 {
       left: 100px;
       .info2 {
         color: #84DBBD;
+        width: 176px;
       }
     }
     .st3 {
       left: 256px;
       .info2 {
         color: #82D5CB;
+        width: 122px;
       }
     }
     .st4 {
       left: 350px;
       .info2 {
         color: #77CCD3;
+        width: 344px;
       }
     }
     .st5 {
       left: 490px;
       .info2 {
         color: #75B9E1;
+        width: 234px;
       }
     }
     .st6 {
       left: 808px;
       .info2 {
         color: #8786C8;
+        width: 266px;
       }
     }
     .st7 {
@@ -620,6 +631,7 @@
       top: -29px;
       .info2 {
         color: #C26BE6;
+        width: 266px;
       }
     }
   }
@@ -773,7 +785,7 @@
           margin-left: 17px;
           margin-top: 10px;
           li {
-            list-style: square outside url("../img/whitepage/dot.png");
+            list-style: square outside url("http://ic.game.com/img/whitepage/dot.png");
           }
         }
       }
@@ -812,7 +824,7 @@
   position: relative;
   .w {
     position: absolute;
-    background: url(../img/whitepage/bg.png) no-repeat;
+    background: url(http://ic.game.com/img/whitepage/bg.png) no-repeat;
     background-size: cover;
     height: 596px;
     width: 928px;
@@ -895,12 +907,14 @@
             font-size: 16px;
             top: 274px;
             color: #4F5362;
+            text-align: center;
           }
           .i3 {
             font-size: 12px;
             color: #333333;
             top: 304px;
             font-weight: 100;
+            text-align: center;
           }
           .i4 {
             .center();
@@ -1036,8 +1050,11 @@
 
 #section11 {
   background-color: #F5F5F5;
+  overflow-y: scroll;
+  height: 100%;
   .tableCell {
     height: 755px !important;
+    overflow-y: scroll;
     .container1 {
       width: 100%;
       height: 100%;
@@ -1058,10 +1075,11 @@
         }
         .info2 {
           position: absolute;
-          width: max-content;
+          width: 720px;
           left: 50%;
           transform: translateX(-50%);
           top: 197px;
+
           .use {
             display: inline-block;
             text-align: center;
