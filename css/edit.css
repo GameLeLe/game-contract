@@ -13,3 +13,6 @@
   transform: translateY(-11px);
   background-color: #FFFFFF;
 }
+#superContainer {
+  z-index: -1;
+}
