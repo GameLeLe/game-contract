@@ -19,6 +19,7 @@
 
 
 
+
     <!--特效引用部分-->
     <script src="http://ic.game.com/lib/eff/js/three.min.js"></script>
     <script src="http://ic.game.com/lib/eff/js/projector.js"></script>
@@ -26,7 +27,7 @@
 
 </head>
 
-<body style="font-family: 'PingFang SC'">
+<body style="font-family: 'PingFang SC';">
 
 <!--第一屏-->
 <div class="section section1 canvas-wrap" id="section0">
@@ -906,5 +907,21 @@
 
 </script>
 <script src="http://ic.game.com/js/texiao.js"></script>
+
+
+
+
+<script>
+    reset();
+    window.onresize = reset;
+    function reset() {
+        if($(window).height() < 721) {
+            $(".next").hide();
+        }else {
+            $(".next").show();
+        }
+    }
+</script>
+
 </body>
 </html>

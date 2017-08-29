@@ -113,7 +113,6 @@ p {
   display: block;
   color: #fff;
   font-weight: 300;
-  font-size: 12px;
 }
 #section0 .canvas-content .nav1 li a:hover {
   background-color: transparent;
@@ -201,15 +200,14 @@ p {
   font-size: 24px;
   text-align: center;
   line-height: 48px;
+  display: inline-block;
+  margin-top: 20px;
   font-weight: 200;
   cursor: pointer;
-  margin: 20px auto 0 auto;
   box-shadow: 0 4px 8px 0 rgba(255, 0, 74, 0.4);
 }
 #section0 .canvas-content .share {
-  overflow: hidden;
-  display: inline-block;
-  padding-top: 3%;
+  margin-top: 55px;
 }
 #section0 .canvas-content .share a {
   margin-left: 8px;
@@ -939,7 +937,7 @@ p {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 175px;
+  top: 185px;
   width: 100%;
   height: 467px;
 }
@@ -1118,7 +1116,7 @@ p {
 #section11 .tableCell .container1 {
   width: 100%;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 #section11 .tableCell .container1 .wa {
   margin: 0 auto;
@@ -1174,7 +1172,7 @@ p {
   margin-right: 0;
 }
 #section11 .tableCell .container1 .wa .footer {
-  height: 400px;
+  height: 422px;
   width: 100%;
   position: absolute;
   bottom: 0;
@@ -1221,7 +1219,7 @@ p {
   position: absolute;
   left: 50%;
   margin-left: -19px;
-  top: 92%;
+  top: 680px;
 }
 @keyframes zhuan {
   from {
