@@ -831,6 +831,8 @@
         $.fn.fullpage({
             anchors: ['page1', 'page2', 'page3', 'page4', 'page5', "page6", "page7", "page8", "page9", "page10", "page11","page12"],
             navigation : true,
+            normalScrollElements : "#section11 .wa",
+            lpFlag : 0,
             afterLoad: function (anchorLink, index) {
                 if (index == 5) {
                     var $imgs = $(".tc img");
@@ -879,9 +881,25 @@
 
                         only10 = 0;
                     }
-                }
+                };
+                if (index == 12) {
+                    $.fn.fullpage.lpFlag = 0;
+                    $("#section11").on("mousewheel", function() {
+                        if($("#section11 .container1 ").scrollTop() > 0) {
+                            $.fn.fullpage.lpFlag = 1;
+                        }
+                        if($.fn.fullpage.lpFlag) {
+                            if($("#section11 .container1 ").scrollTop() === 0) {
+                                location.href = "#page11";
+                            }
+                        }
+                    });
+                };
             },
             onLeave: function (index, direction) {
+                if( index == 12 ) {
+                    $.fn.fullpage.lpFlag = 0;
+                }
             }
         });
     });
