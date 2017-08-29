@@ -866,19 +866,19 @@ p {
 }
 #section7 {
   background-color: #fff;
-  position: relative;
 }
-#section7 .w {
-  position: absolute;
+#section7 .tableCell {
+  vertical-align: top;
+}
+#section7 .tableCell .w {
+  position: relative;
   background: url(http://ic.game.com/img/whitepage/bg.png) no-repeat;
   background-size: cover;
   height: 596px;
   width: 928px;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  margin-top: 45px;
 }
-#section7 .w .title {
+#section7 .tableCell .w .title {
   position: absolute;
   font-size: 48px;
   left: 74px;
@@ -886,7 +886,7 @@ p {
   line-height: 67px;
   font-weight: 500;
 }
-#section7 .w .info {
+#section7 .tableCell .w .info {
   font-weight: 100;
   position: absolute;
   left: 74px;
@@ -895,7 +895,7 @@ p {
   width: 425px;
   line-height: 30px;
 }
-#section7 .w .btn {
+#section7 .tableCell .w .btn {
   font-weight: 200;
   position: absolute;
   width: 160px;
@@ -1108,12 +1108,10 @@ p {
 }
 #section11 {
   background-color: #F5F5F5;
-  overflow-y: scroll;
   height: 100%;
 }
 #section11 .tableCell {
   height: 755px !important;
-  overflow-y: scroll;
 }
 #section11 .tableCell .container1 {
   width: 100%;
@@ -1174,7 +1172,7 @@ p {
   margin-right: 0;
 }
 #section11 .tableCell .container1 .wa .footer {
-  height: 400px;
+  height: 422px;
   width: 100%;
   position: absolute;
   bottom: 0;
