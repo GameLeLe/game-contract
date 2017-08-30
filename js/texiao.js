@@ -294,7 +294,6 @@ $(function () {
         $r5 = $("#section1 .r5");
 
         $r1.click(function () {
-            console.log($("#section2 .dt-im"));
             $("#section2 .dt-im").removeClass("des").siblings(".detail").addClass("des");
             $("#section2 .im").addClass("des").siblings().removeClass("des");
         });
@@ -322,4 +321,5 @@ $(function () {
 
 
 });
+
 

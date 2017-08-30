@@ -14,10 +14,14 @@
 
 //第一屏
 #section0 {
-  background-color: skyblue;
   #canvas {
     width: 100%;
     height: 100%;
+    background-image:linear-gradient(
+            to right,
+            rgb(62, 35, 255) 0%,
+            rgb(255, 35, 98) 100%
+    );
   }
   .canvas-content {
     width: 100%;
@@ -165,7 +169,7 @@
 
 //第二屏
 #section1 {
-  background-image: url(http://ic.game.com/img/index_img/img2.png);
+  background-image: url(http://ic.game.com/img/index_img/img2.jpg);
   -webkit-background-size: cover;
   background-size: cover;
   .w {
@@ -254,7 +258,7 @@
 
 //第三屏
 #section2 {
-  background-image: url(http://ic.game.com/img/index_img/img3.png);
+  background-image: url(http://ic.game.com/img/index_img/img3.jpg);
   background-size: cover;
   .w {
     height: 100%;
@@ -319,6 +323,7 @@
   background-color: #212124;
   .w {
     position: relative;
+    margin-top: -20px;
     .title {
       font-size: 48px;
       top: 58px;
@@ -417,6 +422,7 @@
   background-color: #212124;
   .w {
     position: relative;
+    margin-top: -70px;
     .title {
       .center();
       top: 69px;
@@ -491,12 +497,15 @@
       width: 500px;
     }
   }
+  .next {
+    margin-top: 35px;
+  }
 }
 
 //第六屏
 #section5 {
   position: relative;
-  background: url("http://ic.game.com/img/index_img/img4.png");
+  background: url("http://ic.game.com/img/index_img/img4.jpg");
   background-size: cover;
   .w {
     position: relative;
@@ -506,6 +515,7 @@
       top: 60px;
       left: 50%;
       transform: translateX(-50%);
+      margin-top: -25px;
     }
     .info {
       font-size: 18px;
@@ -535,7 +545,7 @@
   .route {
     height: 200px;
     position: absolute;
-    top: 392px;
+    top: 360px;
     .wl {
       position: absolute;
       top: 100px;
@@ -646,6 +656,8 @@
     position: relative;
     width: 787px;
     height: 100%;
+    padding-bottom: 10px;
+    margin-top: -70px;
     .title {
       position: absolute;
       font-size: 48px;
@@ -827,7 +839,7 @@
     vertical-align: top;
     .w {
       position: relative;
-      background: url(http://ic.game.com/img/whitepage/bg.png) no-repeat;
+      background: url(http://ic.game.com/img/whitepage/bg.jpg) no-repeat;
       background-size: cover;
       height: 596px;
       width: 928px;
@@ -1055,12 +1067,16 @@
   //overflow-y: scroll;
   height: 100%;
   .tableCell {
-    height: 755px !important;
+    //height: 755px !important;
     //overflow-y: scroll;
+    display: block;
+    overflow: hidden;
     .container1 {
       width: 100%;
-      height: 100%;
-      overflow-y: scroll;
+      height: 105%;
+      box-sizing: content-box;
+      overflow: scroll;
+      overflow-x: hidden;
       .wa {
         margin: 0 auto;
         text-align: center;

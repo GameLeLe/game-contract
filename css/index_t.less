@@ -14,10 +14,14 @@
 
 //第一屏
 #section0 {
-  background-color: skyblue;
   #canvas {
     width: 100%;
     height: 100%;
+    background-image:linear-gradient(
+            to right,
+            rgb(62, 35, 255) 0%,
+            rgb(255, 35, 98) 100%
+    );
   }
   .canvas-content {
     width: 100%;
@@ -30,7 +34,7 @@
       line-height: 100px;
       text-align: center;
       display: inline-block;
-      background: url(http://ic.game.com/img/index_img/icon-nav.png) no-repeat;
+      background: url(../img/index_img/icon-nav.png) no-repeat;
       background-position-x: 14px;
       background-position-y: 48px;
       transition: all 1s;
@@ -45,6 +49,7 @@
           display: block;
           color: #fff;
           font-weight: 300;
+          font-size: 12px;
           &:hover {
             background-color: transparent;
           }
@@ -143,15 +148,16 @@
       font-size: 24px;
       text-align: center;
       line-height: 48px;
-      display: inline-block;
-      margin-top: 20px;
       font-weight: 200;
       cursor: pointer;
+      margin: 20px auto 0 auto;
       box-shadow: 0 4px 8px 0 rgba(255,0,74,0.4);
     }
 
     .share {
-      margin-top: 55px;
+      overflow: hidden;
+      display: inline-block;
+      padding-top: 3%;
 
       a {
         margin-left: 8px;
@@ -163,7 +169,7 @@
 
 //第二屏
 #section1 {
-  background-image: url(http://ic.game.com/img/index_img/img2.png);
+  background-image: url(../img/index_img/img2.jpg);
   -webkit-background-size: cover;
   background-size: cover;
   .w {
@@ -252,7 +258,7 @@
 
 //第三屏
 #section2 {
-  background-image: url(http://ic.game.com/img/index_img/img3.png);
+  background-image: url(../img/index_img/img3.jpg);
   background-size: cover;
   .w {
     height: 100%;
@@ -317,6 +323,7 @@
   background-color: #212124;
   .w {
     position: relative;
+    margin-top: -20px;
     .title {
       font-size: 48px;
       top: 58px;
@@ -415,6 +422,7 @@
   background-color: #212124;
   .w {
     position: relative;
+    margin-top: -70px;
     .title {
       .center();
       top: 69px;
@@ -425,7 +433,7 @@
       width: 910px;
       height: 482px;
       top: 136px;
-      background-image: url(http://ic.game.com/img/table/tb.png);
+      background-image: url(../img/table/tb.png);
       background-size: cover;
       .tc {
         position: absolute;
@@ -489,12 +497,15 @@
       width: 500px;
     }
   }
+  .next {
+    margin-top: 35px;
+  }
 }
 
 //第六屏
 #section5 {
   position: relative;
-  background: url("http://ic.game.com/img/index_img/img4.png");
+  background: url("../img/index_img/img4.jpg");
   background-size: cover;
   .w {
     position: relative;
@@ -504,6 +515,7 @@
       top: 60px;
       left: 50%;
       transform: translateX(-50%);
+      margin-top: -25px;
     }
     .info {
       font-size: 18px;
@@ -533,7 +545,7 @@
   .route {
     height: 200px;
     position: absolute;
-    top: 392px;
+    top: 360px;
     .wl {
       position: absolute;
       top: 100px;
@@ -644,6 +656,8 @@
     position: relative;
     width: 787px;
     height: 100%;
+    padding-bottom: 10px;
+    margin-top: -70px;
     .title {
       position: absolute;
       font-size: 48px;
@@ -785,7 +799,7 @@
           margin-left: 17px;
           margin-top: 10px;
           li {
-            list-style: square outside url("http://ic.game.com/img/whitepage/dot.png");
+            list-style: square outside url("../img/whitepage/dot.png");
           }
         }
       }
@@ -825,7 +839,7 @@
     vertical-align: top;
     .w {
       position: relative;
-      background: url(http://ic.game.com/img/whitepage/bg.png) no-repeat;
+      background: url(../img/whitepage/bg.jpg) no-repeat;
       background-size: cover;
       height: 596px;
       width: 928px;
@@ -886,7 +900,7 @@
     }
     .abU {
       .center();
-      top: 185px;
+      top: 175px;
       width: 100%;
       height: 467px;
       ul {
@@ -1053,12 +1067,16 @@
   //overflow-y: scroll;
   height: 100%;
   .tableCell {
-    height: 755px !important;
+    //height: 755px !important;
     //overflow-y: scroll;
+    display: block;
+    overflow: hidden;
     .container1 {
       width: 100%;
-      height: 100%;
-      overflow-y: auto;
+      height: 105%;
+      box-sizing: content-box;
+      overflow: scroll;
+      overflow-x: hidden;
       .wa {
         margin: 0 auto;
         text-align: center;
@@ -1113,7 +1131,7 @@
           }
         }
         .footer {
-          height: 422px;
+          height: 400px;
           width: 100%;
           position: absolute;
           bottom: 0;
@@ -1165,7 +1183,7 @@
   position: absolute;
   left: 50%;
   margin-left: -19px;
-  top: 680px;
+  top: 92%;
 }
 
 //动画
