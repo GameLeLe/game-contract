@@ -198,12 +198,17 @@ $(function () {
         var $m = $(".time .min");
         var $s = $(".time .sec");
 
-        ShowCountDown(2017, 9, 1);
+        ShowCountDown(2017, 9, 1, function () {
+            ShowCountDown(2017, 10, 1);
+            $("#section0 .buyBtn").text("私募中");
+        });
 
         var timer = setInterval(function () {
-            ShowCountDown(2017, 9, 1);
+            ShowCountDown(2017, 9, 1, function () {
+                ShowCountDown(2017, 10, 1);
+                $("#section0 .buyBtn").text("私募中");
+            });
         }, 1000);
-
 
         $lis.click(function () {
             var data = $(this).data("type");
@@ -215,10 +220,15 @@ $(function () {
             if (data == 1) {
                 $(".mmm").animate({opacity: 0}, dur, function () {
                     clearInterval(timer);
-
-                    ShowCountDown(2017, 9, 1);
+                    ShowCountDown(2017, 9, 1, function () {
+                        ShowCountDown(2017, 10, 1);
+                        $("#section0 .buyBtn").text("私募中");
+                    });
                     timer = setInterval(function () {
-                        ShowCountDown(2017, 9, 1);
+                        ShowCountDown(2017, 9, 1, function () {
+                            ShowCountDown(2017, 10, 1);
+                            $("#section0 .buyBtn").text("私募中");
+                        });
                     }, 1000);
                     $("#section0 .dur").text("2017.9.1 - 2017.9.30");
                     $(".mmm").animate({opacity: 1}, dur)
@@ -227,7 +237,7 @@ $(function () {
             if (data == 2) {
                 $(".mmm").animate({opacity: 0}, dur, function () {
                     clearInterval(timer);
-
+                    $("#section0 .buyBtn").text("即将开售");
                     ShowCountDown(2017, 10, 10);
                     timer = setInterval(function () {
                         ShowCountDown(2017, 10, 10);
@@ -239,7 +249,7 @@ $(function () {
             if (data == 3) {
                 $(".mmm").animate({opacity: 0}, dur, function () {
                     clearInterval(timer);
-
+                    $("#section0 .buyBtn").text("即将开售");
                     ShowCountDown(2017, 11, 1);
                     timer = setInterval(function () {
                         ShowCountDown(2017, 11, 1);
@@ -251,7 +261,7 @@ $(function () {
             if (data == 4) {
                 $(".mmm").animate({opacity: 0}, dur, function () {
                     clearInterval(timer);
-
+                    $("#section0 .buyBtn").text("即将开售");
                     ShowCountDown(2018, 1, 1);
                     timer = setInterval(function () {
                         ShowCountDown(2018, 1, 1);
@@ -263,7 +273,7 @@ $(function () {
 
         });
 
-        function ShowCountDown(year, month, day) {
+        function ShowCountDown(year, month, day, cb) {
             var now = new Date();
             var endDate = new Date(year, month - 1, day);
             var leftTime = endDate.getTime() - now.getTime();
@@ -280,6 +290,10 @@ $(function () {
             $h.text(hour);
             $m.text(minute);
             $s.text(second);
+
+            if(leftsecond <= 0) {
+                cb&cb();
+            }
         }
 
 

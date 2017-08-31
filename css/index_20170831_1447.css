@@ -76,6 +76,10 @@ p {
 .section {
   height: 100% !important;
   overflow: hidden;
+  display: block !important;
+}
+.tableCell {
+  display: block !important;
 }
 #section0 #canvas {
   width: 100%;
@@ -141,10 +145,12 @@ p {
   margin-left: -40px;
   bottom: -14px;
 }
+#section0 .canvas-content .buy {
+  margin-top: 54px;
+}
 #section0 .canvas-content .buy ul {
   text-align: center;
   display: inline-block;
-  margin-top: 54px;
 }
 #section0 .canvas-content .buy ul li {
   text-align: center;
@@ -381,7 +387,7 @@ p {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 800px;
+  width: 805px;
 }
 #section3 .w .info2 {
   font-size: 20px;
@@ -472,7 +478,7 @@ p {
 }
 #section4 .w {
   position: relative;
-  margin-top: -70px;
+  margin-top: -45px;
 }
 #section4 .w .title {
   position: absolute;
@@ -551,9 +557,6 @@ p {
   font-weight: 100;
   text-align: center;
   width: 500px;
-}
-#section4 .next {
-  margin-top: 35px;
 }
 #section5 {
   position: relative;
@@ -708,7 +711,7 @@ p {
   width: 787px;
   height: 100%;
   padding-bottom: 10px;
-  margin-top: -70px;
+  margin-top: -30px;
 }
 #section6 .w .title {
   position: absolute;
