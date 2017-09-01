@@ -328,7 +328,6 @@
   background-color: #212124;
   .w {
     position: relative;
-    margin-top: -20px;
     .title {
       font-size: 48px;
       top: 58px;
@@ -336,20 +335,20 @@
       .center();
     }
     .info1 {
+      text-align: center;
       font-size: 20px;
       top: 150px;
-      display: inline-block;
       font-weight: 100;
       .center();
-      width:805px;
+      width: 100%;
     }
     .info2 {
+      text-align: center;
       font-size: 20px;
       top: 188px;
       font-weight: 100;
-      display: inline-block;
       .center();
-      width: 609px;
+      width: 100%;
     }
     .coin {
       .center();
@@ -417,7 +416,7 @@
       text-align: center;
       color: #ccc;
       font-weight: 100;
-      width: 537px;
+      width: 100%;
     }
   }
 }
@@ -427,17 +426,16 @@
   background-color: #212124;
   .w {
     position: relative;
-    margin-top: -45px;
     .title {
       .center();
-      top: 69px;
+      top: 39px;
       font-size: 48px;
     }
     .charts {
       .center();
       width: 910px;
       height: 482px;
-      top: 136px;
+      top: 106px;
       background-image: url(http://ic.game.com/img/table/tb.png);
       background-size: cover;
       .tc {
@@ -494,7 +492,7 @@
     }
     .info {
       .center();
-      top: 630px;
+      top: 600px;
       font-size: 12px;
       color: #ccc;
       font-weight: 100;
@@ -659,7 +657,6 @@
     width: 787px;
     height: 100%;
     padding-bottom: 10px;
-    margin-top: -30px;
     .title {
       position: absolute;
       font-size: 48px;
@@ -838,14 +835,15 @@
 #section7 {
   background-color: #fff;
   .tableCell {
-    vertical-align: top;
     .w {
-      position: relative;
+      position: absolute;
       background: url(http://ic.game.com/img/whitepage/bg.jpg) no-repeat;
       background-size: cover;
       height: 596px;
       width: 928px;
-      margin-top: 45px;
+      left: 50%;
+      top: 40px;
+      transform: translateX(-50%);
       .title {
         position: absolute;
         font-size: 48px;

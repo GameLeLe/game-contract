@@ -5,8 +5,8 @@
     <title>Game.com</title>
     <link rel="shortcut icon" href="http://ic.game.com/img/bitbug_favicon.ico"/>
     <link rel="stylesheet" href="http://ic.game.com/lib/jquery.fullPage.css">
-    <link rel="stylesheet" href="http://ic.game.com/css/index_20170831_1447.css">
-    <link rel="stylesheet" href="http://ic.game.com/css/edit.css">
+    <link rel="stylesheet" href="http://ic.game.com/css/index_20170901_1700.css">
+    <link rel="stylesheet" href="http://ic.game.com/css/edit_20170901_1700.css">
     <link rel="stylesheet" href="http://ic.game.com/lib/eff/css/canvasEff.css">
 
 
@@ -26,7 +26,7 @@
 
         <ul class="clearfix nav1">
             <li><a href="javascript:;">首页</a></li>
-            <li><a href="#page3">G币</a></li>
+            <li><a href="#page4">G币</a></li>
             <li><a href="#page8">白皮书</a></li>
             <li class="logo">
                 <a href="javascript:;" class="clearfix">
@@ -448,8 +448,8 @@
                 2018.8.8
             </div>
             <div class="info2">
-                Game.com IM连接全球游戏玩家 <br>
-                正式发布通过G资本孵化投资 <br>
+                Game.com IM连接全球游戏玩 <br>
+                家正式发布通过G资本孵化投资 <br>
                 的游戏
             </div>
         </div>
@@ -604,7 +604,7 @@
                         Mary Youmans
                     </div>
                     <div class="i3">
-                        CEO
+                        PRODUCT MANAGER
                     </div>
                     <div class="i4">
                         由Game.com牵头G资本天使轮孵化的基于游戏链而生的游戏行业的相关区块链项目，所有项目的ICO仅接受G币，初期策略接受比特币等虚拟货币和G币并存
@@ -820,7 +820,8 @@
 
 
 <script src="http://ic.game.com/lib/eff/js/3d-lines-animation.js"></script>
-<script src="http://ic.game.com/lib/eff/js/color.js"></script>
+<script src="http://ic.game.com/lib/eff/js/color_20170901_1700.js"></script>
+
 
 <script>
 
@@ -833,6 +834,7 @@
             navigation: true,
             normalScrollElements: "#section11 .wa",
             lpFlag: 0,
+            navigationTooltips: ["首页", "生态链", "生态链介绍", "G币介绍", "价格趋势", "发展路线", "售卖阶段", "白皮书", "团队介绍", "售卖细则", "资金用途", "资金用途"],
             afterLoad: function (anchorLink, index) {
                 if (index == 5) {
                     var $imgs = $(".tc img");
@@ -900,6 +902,12 @@
                     });
                 }
 
+                if (index != 8 && index != 9 && index != 10 && index != 11 && index != 12 ) {
+                    $("#fullPage-nav").removeClass("wp");
+                } else {
+                    $("#fullPage-nav").addClass("wp");
+                }
+
             },
             onLeave: function (index, direction) {
                 if (index == 12) {
@@ -911,12 +919,13 @@
 
 
 </script>
-<script src="http://ic.game.com/js/texiao_20170831_1447.js"></script>
+<script src="http://ic.game.com/js/texiao_20170901_1700.js"></script>
 
 
 <script>
     reset();
     window.onresize = reset;
+
     function reset() {
         var ch = $(window).height();
         if (ch < 600) {
@@ -937,6 +946,7 @@
 
             reset(700);
         }
+
         function reset(ch) {
             // 第一页
             $("#section0 .canvas-content  >p").css({"margin-top": (ch - 600) / 100 * 30 + "px"});
@@ -945,22 +955,48 @@
             $("#section1 .round").css({"top": (ch - 600) / 100 * 20 + 75 + "px"});
             $("#section1 .p2-t").css({"top": (ch - 600) / 100 * 41 + 230 + "px"});
             // 第三页
-            $("#section2 .w").css({"margin-top": -55 + ( ch - 600 ) / 100 * 55 + "px"});
+
+            cTop("#section2 .detail .logo", 300, 300 - 55);
+            cTop("#section2 .detail .url", 110, 110 - 55);
+            cTop("#section2 .detail .title", 188, 188 - 55);
+            cTop("#section2 .detail .info", 283, 283 - 55);
+            cTop("#section2 .list", 552, 552 - 55);
+
             // 第四页
-            $("#section3 .w").css({"margin-top": (ch - 600) / 100 * 20 - 40 + "px"});
+            cTop("#section3 .title", 58, 58 - 40);
+            cTop("#section3 .info1", 150, 150 - 40);
+            cTop("#section3 .info2", 188, 188 - 40);
+            cTop("#section3 .coin", 247, 247 - 40);
+            cTop("#section3 .info3", 539, 539 - 40);
+            cTop("#section3 .info4", 583, 583 - 40);
+
             // 第五页
-            $("#section4 .w").css({"margin-top": (ch - 600) / 100 * 50 - 70 + "px"});
+            cTop("#section4 .title", 39, 39 - 38);
+            cTop("#section4 .charts", 106, 106 - 38);
+            cTop("#section4 .info", 600, 600 - 38);
+
             // 第六页
-            $("#section5 .w").css({"margin-bottom": 30 - ( ch - 600 ) / 100 * 30 + "px"});
-            $("#section5 .route").css({"top": (ch - 600) / 100 * 60 + 300 + "px"});
+            cTop("#section5 .title", 60, 60 - 30);
+            cTop("#section5 .info", 154, 154 - 50);
+            cTop("#section5 .url", 253, 253 - 50);
+            cTop("#section5 .line", 283, 283 - 50);
+            cTop("#section5 .route", 360, 360 - 60);
+
             // 第七页
-            $("#section6 .w").css({"margin-top": (ch - 600) / 100 * 40 - 75 + "px"});
+            $("#section6 .title").css({"top": (ch - 600) / 100 * 75 + 7 + "px"});
+            $("#section6 .sel >div").css({"top": (ch - 600) / 100 * 75 + 112 + "px"});
+            $("#section6 .line1, #section6 .line2").css({"top": (ch - 600) / 100 * 75 + 172 + "px"});
+            $("#section6 .container").css({"top": (ch - 600) / 100 * 75 + 272 + "px"});
+            $("#section6 .tri").css({"top": (ch - 600) / 100 * 75 + 257 + "px"});
+            $("#section6 .fu").css({"top": (ch - 600) / 100 * 75 + 558 + "px"});
+
             // 第八页
-            $("#section7 .w").css({"margin-top": (ch - 600) / 100 * 45 + "px"});
+            $("#section7 .w ").css({"top": (ch - 600) / 100 * 40 + "px"});
             // 第九页
-            $("#section8 .w").css({"margin-top": (ch - 600) / 100 * 50 - 50 + "px"});
-            $("#section8 .info1").css({"top": -(ch - 600) / 100 * 19 + 60 + "px"});
-            $("#section8 .info2").css({"top": -(ch - 600) / 100 * 17 + 90 + "px"});
+            cTop("#section8 .info1", 41, 10);
+            cTop("#section8 .info2", 73, 35);
+            cTop("#section8 .abU", 175, 120);
+
             // 第10页
             $("#section9 .info").css({"top": (ch - 600) / 100 * 57 + 70 + "px"});
             $("#section9 .info1").css({"top": (ch - 600) / 100 * 25 + "px"});
@@ -969,9 +1005,15 @@
             // 第11页
             $("#section10 .info1").css({"top": (ch - 600) / 100 * 45 + 15 + "px"});
             $("#section10 .info2").css({"top": (ch - 600) / 100 * 80 + 160 + "px"});
+
+
+            function cTop(sel, fr, to) {
+                $(sel).css({"top": (ch - 600) / 100 * ( fr - to ) + to + "px"});
+            }
         }
     }
 </script>
+
 
 </body>
 </html>
