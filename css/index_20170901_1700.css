@@ -98,7 +98,7 @@ p {
   line-height: 100px;
   text-align: center;
   display: inline-block;
-  background: url(http://ic.game.com/img/index_img/icon-nav.png) no-repeat;
+  background: url(https://ic.game.com/img/index_img/icon-nav.png) no-repeat;
   background-position-x: 14px;
   background-position-y: 48px;
   transition: all 1s;
@@ -220,7 +220,7 @@ p {
   margin-right: 8px;
 }
 #section1 {
-  background-image: url(http://ic.game.com/img/index_img/img2.jpg);
+  background-image: url(https://ic.game.com/img/index_img/img2.jpg);
   -webkit-background-size: cover;
   background-size: cover;
 }
@@ -306,7 +306,7 @@ p {
   left: -48px;
 }
 #section2 {
-  background-image: url(http://ic.game.com/img/index_img/img3.jpg);
+  background-image: url(https://ic.game.com/img/index_img/img3.jpg);
   background-size: cover;
 }
 #section2 .w {
@@ -492,7 +492,7 @@ p {
   width: 910px;
   height: 482px;
   top: 106px;
-  background-image: url(http://ic.game.com/img/table/tb.png);
+  background-image: url(https://ic.game.com/img/table/tb.png);
   background-size: cover;
 }
 #section4 .w .charts .tc {
@@ -558,7 +558,7 @@ p {
 }
 #section5 {
   position: relative;
-  background: url("http://ic.game.com/img/index_img/img4.jpg");
+  background: url("https://ic.game.com/img/index_img/img4.jpg");
   background-size: cover;
 }
 #section5 .w {
@@ -848,7 +848,7 @@ p {
   margin-top: 10px;
 }
 #section6 .w .container .text .li li {
-  list-style: square outside url("http://ic.game.com/img/whitepage/dot.png");
+  list-style: square outside url("https://ic.game.com/img/whitepage/dot.png");
 }
 #section6 .w .container .t1 div {
   display: block;
@@ -877,7 +877,7 @@ p {
 }
 #section7 .tableCell .w {
   position: absolute;
-  background: url(http://ic.game.com/img/whitepage/bg.jpg) no-repeat;
+  background: url(https://ic.game.com/img/whitepage/bg.jpg) no-repeat;
   background-size: cover;
   height: 596px;
   width: 928px;
