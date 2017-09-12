@@ -1,0 +1,53 @@
+#fullPage-nav li {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+#fullPage-nav li span {
+  transition: all 0.2s;
+  background-color: rgba(255, 255, 255, 0.6);
+  border: none;
+}
+#fullPage-nav li .active span {
+  border-radius: 5px;
+  height: 30px;
+  transform: translateY(-11px);
+  background-color: #FFFFFF;
+}
+#fullPage-nav .fullPage-tooltip {
+  background-color: #F2F2F2;
+  width: 65px;
+  height: 20px;
+  font-size: 12px;
+  color: #666666;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 4px;
+}
+#fullPage-nav .fullPage-tooltip:before {
+  display: block;
+  position: absolute;
+  content: "";
+  width: 6px;
+  height: 6px;
+  background-color: #F2F2F2;
+  top: 50%;
+  right: -3px;
+  transform: rotate(45deg);
+  margin-top: -3px;
+}
+#fullPage-nav.wp li span {
+  background-color: #E6E6E6;
+  border: none;
+}
+#fullPage-nav.wp li .active span {
+  background-color: #D9D9D9;
+}
+#fullPage-nav.wp .fullPage-tooltip {
+  background-color: #E6E6E6;
+}
+#fullPage-nav.wp .fullPage-tooltip:before {
+  background-color: #E6E6E6;
+}
+#superContainer {
+  z-index: 0;
+}
