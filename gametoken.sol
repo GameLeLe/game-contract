@@ -145,28 +145,16 @@ contract GameICO is StandardToken, SafeMath {
     event CreateGameIco(address indexed _to, uint256 _value);
 
     // constructor
-    function GameICO(address _etherProceedsAccount,
-        uint256 _window0StartTime, uint256 _window0EndTime,
-        uint256 _window1StartTime, uint256 _window1EndTime,
-        uint256 _window2StartTime, uint256 _window2EndTime,
-        uint256 _window3StartTime, uint256 _window3EndTime)
+    function GameICO()
     {
         isFinalized             = false;
-        etherProceedsAccount    = _etherProceedsAccount;
-        window0StartTime = _window0StartTime;
-        window0EndTime = _window0EndTime;
-        window1StartTime = _window1StartTime;
-        window1EndTime = _window1EndTime;
-        window2StartTime = _window2StartTime;
-        window2EndTime = _window2EndTime;
-        window3StartTime = _window3StartTime;
-        window3EndTime = _window3EndTime;
+        etherProceedsAccount    = msg.sender;
     }
     function setTimeAttributes(
-        uint256 _window0StartTime, uint256 _window0EndTime,
-        uint256 _window1StartTime, uint256 _window1EndTime,
-        uint256 _window2StartTime, uint256 _window2EndTime,
-        uint256 _window3StartTime, uint256 _window3EndTime)
+    uint256 _window0StartTime, uint256 _window0EndTime,
+    uint256 _window1StartTime, uint256 _window1EndTime,
+    uint256 _window2StartTime, uint256 _window2EndTime,
+    uint256 _window3StartTime, uint256 _window3EndTime)
     {
         require(msg.sender == etherProceedsAccount);
         window0StartTime = _window0StartTime;
