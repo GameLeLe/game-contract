@@ -169,16 +169,16 @@ contract GameICO is StandardToken, SafeMath {
     }
     function adjustSupply(uint256 _window0TotalSupply, uint256 _window1TotalSupply, uint256 _window2TotalSupply){
         require(msg.sender == etherProceedsAccount);
-        window0TotalSupply = _window0TotalSupply;
-        window1TotalSupply = _window1TotalSupply;
-        window2TotalSupply = _window2TotalSupply;
+        window0TotalSupply = _window0TotalSupply * 10**decimals;
+        window1TotalSupply = _window1TotalSupply * 10**decimals;
+        window2TotalSupply = _window2TotalSupply * 10**decimals;
     }
     function adjustCap(uint256 _preservedTokens, uint256 _window0TokenCreationCap, uint256 _window1TokenCreationCap, uint256 _window2TokenCreationCap){
         require(msg.sender == etherProceedsAccount);
-        preservedTokens = _preservedTokens;
-        window0TokenCreationCap = _window0TokenCreationCap;
-        window1TokenCreationCap = _window1TokenCreationCap;
-        window2TokenCreationCap = _window2TokenCreationCap;
+        preservedTokens = _preservedTokens * 10**decimals;
+        window0TokenCreationCap = _window0TokenCreationCap * 10**decimals;
+        window1TokenCreationCap = _window1TokenCreationCap * 10**decimals;
+        window2TokenCreationCap = _window2TokenCreationCap * 10**decimals;
     }
     function adjustRate(uint256 _window0TokenExchangeRate, uint256 _window1TokenExchangeRate, uint256 _window2TokenExchangeRate){
         require(msg.sender == etherProceedsAccount);
