@@ -1,5 +1,6 @@
 pragma solidity ^0.4.8;
 
+// @address 0x831C198519997B58A89fE118988334FbDA430020
 // The implementation for the Game ICO smart contract was inspired by
 // the Ethereum token creation tutorial, the FirstBlood token, and the BAT token.
 
@@ -10,27 +11,27 @@ pragma solidity ^0.4.8;
 contract SafeMath {
 
     // assert no longer needed once solidity is on 0.4.10
-    function assert(bool assertion) internal {
-        if (!assertion) {
-            throw;
-        }
-    }
+//    function assert(bool assertion) internal {
+//        if (!assertion) {
+//            throw;
+//        }
+//    }
 
     function safeAdd(uint256 x, uint256 y) internal returns(uint256) {
         uint256 z = x + y;
-        assert((z >= x) && (z >= y));
+        require((z >= x) && (z >= y));
         return z;
     }
 
     function safeSubtract(uint256 x, uint256 y) internal returns(uint256) {
-        assert(x >= y);
+        require(x >= y);
         uint256 z = x - y;
         return z;
     }
 
     function safeMult(uint256 x, uint256 y) internal returns(uint256) {
         uint256 z = x * y;
-        assert((x == 0)||(z/x == y));
+        require((x == 0)||(z/x == y));
         return z;
     }
 
@@ -102,7 +103,7 @@ contract StandardToken is Token {
 
 contract GameICO is StandardToken, SafeMath {
     // Descriptive properties
-    string public constant name = "Game.com ICO Token";
+    string public constant name = "Game.com Token";
     string public constant symbol = "GTC";
     uint256 public constant decimals = 18;
     string public version = "1.0";
@@ -149,6 +150,7 @@ contract GameICO is StandardToken, SafeMath {
     // constructor
     function GameICO()
     {
+        totalSupply =  2000000000 * 10**decimals;
         isFinalized             = false;
         etherProceedsAccount    = msg.sender;
     }
@@ -208,9 +210,9 @@ contract GameICO is StandardToken, SafeMath {
     function () payable {
         create();
     }
-    function create() payable{
+    function create() internal{
         require(!isFinalized);
-        require(msg.value > 0);
+        require(msg.value > 0.01 ether);
         uint256 tokens = 0;
         uint256 checkedSupply = 0;
 
@@ -236,29 +238,29 @@ contract GameICO is StandardToken, SafeMath {
             window2TotalSupply = checkedSupply;
             CreateGameIco(msg.sender, tokens);
         }else{
-            throw;
+            require(false);
         }
 
     }
 
-    function time() constant returns (uint) {
+    function time() internal returns (uint) {
         return block.timestamp;
     }
 
-    function today(uint startTime) constant returns (uint) {
+    function today(uint startTime) internal returns (uint) {
         return dayFor(time(), startTime);
     }
 
-    function dayFor(uint timestamp, uint startTime) constant returns (uint) {
+    function dayFor(uint timestamp, uint startTime) internal returns (uint) {
         return timestamp < startTime ? 0 : safeSubtract(timestamp, startTime) / 24 hours + 1;
     }
 
     function withDraw(uint256 _value){
         require(msg.sender == etherProceedsAccount);
         if(multiWallet != 0x0){
-            if (!multiWallet.send(_value)) throw;
+            if (!multiWallet.send(_value)) require(false);
         }else{
-            if (!etherProceedsAccount.send(_value)) throw;
+            if (!etherProceedsAccount.send(_value)) require(false);
         }
     }
 
@@ -267,10 +269,10 @@ contract GameICO is StandardToken, SafeMath {
         require(msg.sender == etherProceedsAccount);
         isFinalized = true;
         balances[etherProceedsAccount] += preservedTokens +
-                                            window0TokenCreationCap - window0TotalSupply +
-                                            window1TokenCreationCap - window1TotalSupply +
-                                            window2TokenCreationCap - window2TotalSupply;
-        if (!etherProceedsAccount.send(this.balance)) throw;
+                                          window0TokenCreationCap - window0TotalSupply +
+                                          window1TokenCreationCap - window1TotalSupply +
+                                          window2TokenCreationCap - window2TotalSupply;
+        if (!etherProceedsAccount.send(this.balance)) require(false);
     }
 
 }
