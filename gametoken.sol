@@ -1,6 +1,7 @@
 pragma solidity ^0.4.8;
 
 // @address 0x4055ce7003525c966beff40cfe6f04ab4c0dd82f
+// **@address 0xc0f29cdf021e0900ab6ad8d5c4cd86268d5eb715
 // The implementation for the Game ICO smart contract was inspired by
 // the Ethereum token creation tutorial, the FirstBlood token, and the BAT token.
 
@@ -51,9 +52,10 @@ contract StandardToken is Token {
 
     mapping (address => uint256) balances;
     mapping (address => mapping (address => uint256)) allowed;
+    bool allowTransfer = false;
 
     function transfer(address _to, uint256 _value) returns (bool success) {
-        if (balances[msg.sender] >= _value && _value > 0) {
+        if (balances[msg.sender] >= _value && _value > 0 && allowTransfer) {
             balances[msg.sender] -= _value;
             balances[_to] += _value;
             Transfer(msg.sender, _to, _value);
@@ -64,7 +66,7 @@ contract StandardToken is Token {
     }
 
     function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
-        if (balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0) {
+        if (balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0 && allowTransfer) {
             balances[_to] += _value;
             balances[_from] -= _value;
             allowed[_from][msg.sender] -= _value;
@@ -136,16 +138,16 @@ contract GameICO is StandardToken, SafeMath {
     uint256 public window3TokenExchangeRate = 0;
 
     uint256 public preICOLimit = 0;
+    bool public instantTransfer = false;
 
     // Events for logging refunds and token creation.
-    //event LogRefund(address indexed _to, uint256 _value);
     event CreateGameIco(address indexed _to, uint256 _value);
     event PreICOTokenPushed(address indexed _buyer, uint256 _amount);
 
     // constructor
     function GameICO()
     {
-        totalSupply =  2000000000 * 10**decimals;
+        totalSupply             = 2000000000 * 10**decimals;
         isFinalized             = false;
         etherProceedsAccount    = msg.sender;
     }
@@ -193,6 +195,14 @@ contract GameICO is StandardToken, SafeMath {
         require(msg.sender == etherProceedsAccount);
         preICOLimit = _preICOLimit;// * 10**decimals;
     }
+    function setInstantTransfer(bool _instantTransfer){
+        require(msg.sender == etherProceedsAccount);
+        instantTransfer = _instantTransfer;
+    }
+    function setAllowTransfer(bool _allowTransfer){
+        require(msg.sender == etherProceedsAccount);
+        allowTransfer = _allowTransfer;
+    }
 
     function preICOPush(address buyer, uint256 amount) {
         require(msg.sender == etherProceedsAccount);
@@ -211,7 +221,7 @@ contract GameICO is StandardToken, SafeMath {
     }
     function create() internal{
         require(!isFinalized);
-        require(msg.value >= 0.1 ether);
+        require(msg.value >= 0.01 ether);
         uint256 tokens = 0;
         uint256 checkedSupply = 0;
 
@@ -224,6 +234,7 @@ contract GameICO is StandardToken, SafeMath {
             require(window0TokenCreationCap >= checkedSupply);
             balances[msg.sender] += tokens;
             window0TotalSupply = checkedSupply;
+            if(multiWallet != 0x0 && instantTransfer) multiWallet.transfer(msg.value);
             CreateGameIco(msg.sender, tokens);
         }else if(window1StartTime != 0 && window1EndTime!= 0 && time() >= window1StartTime && time() <= window1EndTime){
             tokens = safeMult(msg.value, window1TokenExchangeRate);
@@ -231,6 +242,7 @@ contract GameICO is StandardToken, SafeMath {
             require(window1TokenCreationCap >= checkedSupply);
             balances[msg.sender] += tokens;
             window1TotalSupply = checkedSupply;
+            if(multiWallet != 0x0 && instantTransfer) multiWallet.transfer(msg.value);
             CreateGameIco(msg.sender, tokens);
         }else if(window2StartTime != 0 && window2EndTime != 0 && time() >= window2StartTime && time() <= window2EndTime){
             tokens = safeMult(msg.value, window2TokenExchangeRate);
@@ -238,6 +250,7 @@ contract GameICO is StandardToken, SafeMath {
             require(window2TokenCreationCap >= checkedSupply);
             balances[msg.sender] += tokens;
             window2TotalSupply = checkedSupply;
+            if(multiWallet != 0x0 && instantTransfer) multiWallet.transfer(msg.value);
             CreateGameIco(msg.sender, tokens);
         }else{
             require(false);
