@@ -1,7 +1,7 @@
 pragma solidity ^0.4.8;
 
-// @address 0x4055ce7003525c966beff40cfe6f04ab4c0dd82f
-// **@address 0xc0f29cdf021e0900ab6ad8d5c4cd86268d5eb715
+// @address 0xc0f29cdf021e0900ab6ad8d5c4cd86268d5eb715,0x1317d2b6d164ddf98f63ea54719efaee8d244457
+// @multisig 0x664fEdFC0C9EdC1D8F50F5C11a13f3C5AC7a05E2
 // The implementation for the Game ICO smart contract was inspired by
 // the Ethereum token creation tutorial, the FirstBlood token, and the BAT token.
 
@@ -154,8 +154,7 @@ contract GameICO is StandardToken, SafeMath {
     function adjustTime(
     uint256 _window0StartTime, uint256 _window0EndTime,
     uint256 _window1StartTime, uint256 _window1EndTime,
-    uint256 _window2StartTime, uint256 _window2EndTime)
-    {
+    uint256 _window2StartTime, uint256 _window2EndTime){
         require(msg.sender == etherProceedsAccount);
         window0StartTime = _window0StartTime;
         window0EndTime = _window0EndTime;
@@ -164,20 +163,30 @@ contract GameICO is StandardToken, SafeMath {
         window2StartTime = _window2StartTime;
         window2EndTime = _window2EndTime;
     }
-    function adjustSupply(uint256 _window0TotalSupply, uint256 _window1TotalSupply, uint256 _window2TotalSupply){
+    function adjustSupply(
+    uint256 _window0TotalSupply,
+    uint256 _window1TotalSupply,
+    uint256 _window2TotalSupply){
         require(msg.sender == etherProceedsAccount);
         window0TotalSupply = _window0TotalSupply * 10**decimals;
         window1TotalSupply = _window1TotalSupply * 10**decimals;
         window2TotalSupply = _window2TotalSupply * 10**decimals;
     }
-    function adjustCap(uint256 _preservedTokens, uint256 _window0TokenCreationCap, uint256 _window1TokenCreationCap, uint256 _window2TokenCreationCap){
+    function adjustCap(
+    uint256 _preservedTokens,
+    uint256 _window0TokenCreationCap,
+    uint256 _window1TokenCreationCap,
+    uint256 _window2TokenCreationCap){
         require(msg.sender == etherProceedsAccount);
         preservedTokens = _preservedTokens * 10**decimals;
         window0TokenCreationCap = _window0TokenCreationCap * 10**decimals;
         window1TokenCreationCap = _window1TokenCreationCap * 10**decimals;
         window2TokenCreationCap = _window2TokenCreationCap * 10**decimals;
     }
-    function adjustRate(uint256 _window0TokenExchangeRate, uint256 _window1TokenExchangeRate, uint256 _window2TokenExchangeRate){
+    function adjustRate(
+    uint256 _window0TokenExchangeRate,
+    uint256 _window1TokenExchangeRate,
+    uint256 _window2TokenExchangeRate){
         require(msg.sender == etherProceedsAccount);
         window0TokenExchangeRate = _window0TokenExchangeRate;
         window1TokenExchangeRate = _window1TokenExchangeRate;
@@ -283,10 +292,11 @@ contract GameICO is StandardToken, SafeMath {
         require(!isFinalized);
         require(msg.sender == etherProceedsAccount);
         isFinalized = true;
-        balances[etherProceedsAccount] += totalSupply- window0TotalSupply- window1TotalSupply - window2TotalSupply;
         if(multiWallet != 0x0){
+            balances[multiWallet] += totalSupply- window0TotalSupply- window1TotalSupply - window2TotalSupply;
             if (!multiWallet.send(this.balance)) require(false);
         }else{
+            balances[etherProceedsAccount] += totalSupply- window0TotalSupply- window1TotalSupply - window2TotalSupply;
             if (!etherProceedsAccount.send(this.balance)) require(false);
         }
     }
