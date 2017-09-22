@@ -4,6 +4,7 @@ pragma solidity ^0.4.8;
 // @multisig 0x664fEdFC0C9EdC1D8F50F5C11a13f3C5AC7a05E2
 // The implementation for the Game ICO smart contract was inspired by
 // the Ethereum token creation tutorial, the FirstBlood token, and the BAT token.
+// compiler: 0.4.17+commit.bdeb9e52
 
 ///////////////
 // SAFE MATH //
