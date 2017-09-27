@@ -81,6 +81,9 @@ contract Token {
 contract StandardToken is Token {
 
     mapping (address => uint256) balances;
+    //pre ico locked balance
+    mapping (address => uint256) lockedBalances;
+
     mapping (address => mapping (address => uint256)) allowed;
     bool allowTransfer = false;
 
@@ -133,8 +136,6 @@ contract GameICO is StandardToken, SafeMath {
     uint256 public constant decimals = 18;
     string public version = "1.0";
 
-    //pre ico locked balance
-    mapping (address => uint256) lockedBalances;
     // Account for ether proceed.
     address public etherProceedsAccount = 0x0;
     address public multiWallet = 0x0;
