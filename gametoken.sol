@@ -83,6 +83,7 @@ contract StandardToken is Token {
     mapping (address => uint256) balances;
     //pre ico locked balance
     mapping (address => uint256) lockedBalances;
+    mapping (address => uint256) initLockedBalances;
 
     mapping (address => mapping (address => uint256)) allowed;
     bool allowTransfer = false;
@@ -181,6 +182,7 @@ contract GameICO is StandardToken, SafeMath {
     event CreateGameIco(address indexed _to, uint256 _value);
     event PreICOTokenPushed(address indexed _buyer, uint256 _amount);
     event OwnerAddition(address indexed owner);
+    event OwnerRemoval(address indexed owner);
 
     modifier ownerExists(address owner) {
         require(isOwner[owner]);
@@ -261,6 +263,12 @@ contract GameICO is StandardToken, SafeMath {
         owners.push(owner);
         OwnerAddition(owner);
     }
+    function removeOwner(address owner)
+    {
+        require(msg.sender == etherProceedsAccount);
+        isOwner[owner] = false;
+        OwnerRemoval(owner);
+    }
 
     function preICOPush(address buyer, uint256 amount) {
         require(msg.sender == etherProceedsAccount);
@@ -270,20 +278,23 @@ contract GameICO is StandardToken, SafeMath {
         checkedSupply = safeAdd(window0TotalSupply, amount);
         require(window0TokenCreationCap >= checkedSupply);
         //balances[buyer] += tokens;
-        lockedBalances[buyer] += tokens;
+        //lockedBalances[buyer] += tokens;
+        initLockedBalances[buyer] += tokens;
         window0TotalSupply = checkedSupply;
         PreICOTokenPushed(buyer, amount);
     }
     function lockedBalanceOf(address _owner) constant returns (uint256 balance) {
         return lockedBalances[_owner];
     }
+    function initLockedBalanceOf(address _owner) constant returns (uint256 balance) {
+        return initLockedBalances[_owner];
+    }
     function unlockBalance(address _owner, uint256 prob)
     public
     ownerExists(msg.sender)
     returns (bool){
-        require(msg.sender == etherProceedsAccount);
         uint256 shouldUnlockedBalance = 0;
-        shouldUnlockedBalance = (balances[_owner] + lockedBalances[_owner]) * prob / 100;
+        shouldUnlockedBalance = initLockedBalances * prob / 100;
         if(shouldUnlockedBalance > lockedBalances[_owner]){
             shouldUnlockedBalance = lockedBalances[_owner];
         }
@@ -309,7 +320,8 @@ contract GameICO is StandardToken, SafeMath {
             checkedSupply = safeAdd(window0TotalSupply, tokens);
             require(window0TokenCreationCap >= checkedSupply);
             //balances[msg.sender] += tokens;
-            lockedBalances[msg.sender] += tokens;
+            //lockedBalances[msg.sender] += tokens;
+            initLockedBalances[msg.sender] += tokens;
             window0TotalSupply = checkedSupply;
             if(multiWallet != 0x0 && instantTransfer) multiWallet.transfer(msg.value);
             CreateGameIco(msg.sender, tokens);
@@ -361,10 +373,12 @@ contract GameICO is StandardToken, SafeMath {
         require(msg.sender == etherProceedsAccount);
         isFinalized = true;
         if(multiWallet != 0x0){
-            lockedBalances[multiWallet] += totalSupply- window0TotalSupply- window1TotalSupply - window2TotalSupply;
+            //lockedBalances[multiWallet] += totalSupply- window0TotalSupply- window1TotalSupply - window2TotalSupply;
+            initLockedBalances[multiWallet] += totalSupply- window0TotalSupply- window1TotalSupply - window2TotalSupply;
             if (!multiWallet.send(this.balance)) require(false);
         }else{
-            lockedBalances[etherProceedsAccount] += totalSupply- window0TotalSupply- window1TotalSupply - window2TotalSupply;
+            //lockedBalances[etherProceedsAccount] += totalSupply- window0TotalSupply- window1TotalSupply - window2TotalSupply;
+            initLockedBalances[etherProceedsAccount] += totalSupply- window0TotalSupply- window1TotalSupply - window2TotalSupply;
             if (!etherProceedsAccount.send(this.balance)) require(false);
         }
     }
