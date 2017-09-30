@@ -7,7 +7,8 @@ pragma solidity ^0.4.8;
 // compiler: 0.4.17+commit.bdeb9e52
 
 /*
-1. Contract Address: 0xb70835d7822ebb9426b56543e391846c107bd32c
+1. Contract Address:    0xb70835d7822ebb9426b56543e391846c107bd32c
+   Test Contract:       0x981930b9c44fc164084491ad3e1c8568ba3b0fb6
 
 2. Official Site URL:https://www.game.com/
 
@@ -15,7 +16,7 @@ pragma solidity ^0.4.8;
 
 4. Official Contact Email Address:ico@game.com
 
-5. Link to blog (optional):
+5. Link to blog (optional):https://medium.com/@Game.com
 
 6. Link to reddit (optional):
 
