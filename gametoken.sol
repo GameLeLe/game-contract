@@ -89,6 +89,7 @@ contract StandardToken is Token {
     bool allowTransfer = false;
 
     function transfer(address _to, uint256 _value) public returns (bool success){
+        require(_to != address(0));
         if (balances[msg.sender] >= _value && _value > 0 && allowTransfer) {
             balances[msg.sender] -= _value;
             balances[_to] += _value;
@@ -100,9 +101,10 @@ contract StandardToken is Token {
     }
 
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success){
+        //require(_to != address(0) && _from != address(0));
         if (balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0 && allowTransfer) {
-            balances[_to] += _value;
             balances[_from] -= _value;
+            balances[_to] += _value;
             allowed[_from][msg.sender] -= _value;
             Transfer(_from, _to, _value);
             return true;
@@ -119,6 +121,7 @@ contract StandardToken is Token {
     }
 
     function approve(address _spender, uint256 _value) public returns (bool success){
+        require((_value == 0) || (allowed[msg.sender][_spender] == 0));
         allowed[msg.sender][_spender] = _value;
         Approval(msg.sender, _spender, _value);
         return true;
@@ -138,7 +141,7 @@ contract GameICO is StandardToken, SafeMath {
     string public constant name = "Game.com Token";
     string public constant symbol = "GTC";
     uint256 public constant decimals = 18;
-    string public version = "1.0";
+    string public constant version = "1.0";
 
     // Account for ether proceed.
     address public etherProceedsAccount = 0x0;
@@ -288,7 +291,7 @@ contract GameICO is StandardToken, SafeMath {
     public{
         require(msg.sender == etherProceedsAccount);
 
-        uint256 tokens = 0;
+        //uint256 tokens = 0;
         uint256 checkedSupply = 0;
         checkedSupply = safeAdd(window0TotalSupply, amount);
         require(window0TokenCreationCap >= checkedSupply);
